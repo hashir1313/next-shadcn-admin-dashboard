@@ -8,18 +8,18 @@ Always mark with done when a task is done
 - [x] **verify-ui-deps** — Lucide, Sonner, CVA, clsx, tailwind-merge already installed
 - [x] **verify-state-deps** — Zustand, React Hook Form, Zod already installed
 - [x] **verify-dnd** — DND Kit already installed
-- [ ] **install-prisma** — Install Prisma and configure with PostgreSQL
-- [ ] **install-query** — Install TanStack Query for data fetching
-- [ ] **install-auth** — Install Better Auth for authentication
-- [ ] **install-motion** — Install Motion for animations
-- [ ] **setup-prisma** — Initialize Prisma schema with base models
+- [x] **install-prisma** — Install Prisma and configure with PostgreSQL
+- [x] **install-query** — Install TanStack Query for data fetching
+- [x] **install-auth** — Install Better Auth for authentication
+- [x] **install-motion** — Install Motion for animations
+- [x] **setup-prisma** — Initialize Prisma schema with base models
 
 ## Phase 2: Database & API
 
-- [ ] **setup-schema** — Create User, Project, Milestone, ActivityLog models
-- [ ] **api-projects** — CRUD endpoints for projects
-- [ ] **api-milestones** — CRUD endpoints for milestones with reorder
-- [ ] **api-public** — Public endpoint for client page data
+- [x] **setup-schema** — Create User, Project, Milestone, ActivityLog models
+- [x] **api-projects** — CRUD endpoints for projects
+- [x] **api-milestones** — CRUD endpoints for milestones with reorder
+- [x] **api-public** — Public endpoint for client page data
 
 ## Phase 3: Authentication
 
