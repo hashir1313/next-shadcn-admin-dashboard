@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, PlusCircleIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -35,9 +35,14 @@ export function ActiveProjects({ projects }: ActiveProjectsProps) {
       </CardHeader>
       <CardContent>
         {projects.length === 0 ? (
-          <p className="py-8 text-center text-muted-foreground text-sm">
-            No active projects. Create one to get started.
-          </p>
+          <div className="flex flex-col items-center justify-center py-8">
+            <Button asChild>
+              <Link href="/dashboard/projects/new">
+                <PlusCircleIcon className="mr-1 size-4" />
+                Create Project
+              </Link>
+            </Button>
+          </div>
         ) : (
           <div className="space-y-4">
             {projects.map((project) => {
