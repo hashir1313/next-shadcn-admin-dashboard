@@ -2,15 +2,25 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 
+import { sendResetPasswordEmail } from "./email";
 import { prisma } from "./prisma";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    },
+  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
+    async sendResetPassword({ user, token }) {
+      await sendResetPasswordEmail({ email: user.email, token });
+    },
   },
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days
