@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-import { AlertTriangle, ArrowLeft, Home } from "lucide-react";
+import { AlertTriangle, Home, RotateCw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -45,7 +45,7 @@ export default function AuthErrorPage() {
         </Button>
         <Button asChild>
           <Link href="/auth/v2/login">
-            <ArrowLeft className="mr-2 size-4" />
+            <RotateCw className="mr-2 size-4" />
             Try Again
           </Link>
         </Button>
