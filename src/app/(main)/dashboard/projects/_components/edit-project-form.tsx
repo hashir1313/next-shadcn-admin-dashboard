@@ -21,7 +21,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, GripVertical, Pencil, Trash2 } from "lucide-react";
+import { GripVertical, Pencil, Trash2 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -355,161 +355,156 @@ export function EditProjectForm({ project, milestones: initialMilestones }: Edit
   }
 
   return (
-    <>
-      <Button variant="ghost" size="icon" onClick={() => router.push("/dashboard/projects")}>
-        <ArrowLeft className="size-4" />
-      </Button>
-      <Card>
-        <CardHeader>
-          <CardTitle>Edit Project</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form noValidate onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FieldGroup className="gap-4">
+    <Card>
+      <CardHeader>
+        <CardTitle>Edit Project</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form noValidate onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FieldGroup className="gap-4">
+            <Controller
+              control={form.control}
+              name="name"
+              render={({ field, fieldState }) => (
+                <Field className="gap-1.5" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="project-name">Project Name *</FieldLabel>
+                  <Input
+                    {...field}
+                    id="project-name"
+                    placeholder="My awesome project"
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+            <Controller
+              control={form.control}
+              name="description"
+              render={({ field, fieldState }) => (
+                <Field className="gap-1.5" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="project-description">Description</FieldLabel>
+                  <Textarea
+                    {...field}
+                    id="project-description"
+                    placeholder="Brief description of the project"
+                    rows={3}
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+            <Controller
+              control={form.control}
+              name="status"
+              render={({ field, fieldState }) => (
+                <Field className="gap-1.5" data-invalid={fieldState.invalid}>
+                  <FieldLabel>Status</FieldLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger aria-invalid={fieldState.invalid}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="draft">Draft</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="paused">Paused</SelectItem>
+                      <SelectItem value="completed">Completed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+            <div className="grid gap-4 sm:grid-cols-2">
               <Controller
                 control={form.control}
-                name="name"
+                name="clientName"
                 render={({ field, fieldState }) => (
                   <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="project-name">Project Name *</FieldLabel>
+                    <FieldLabel htmlFor="client-name">Client Name</FieldLabel>
+                    <Input {...field} id="client-name" placeholder="Client name" aria-invalid={fieldState.invalid} />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Controller
+                control={form.control}
+                name="clientEmail"
+                render={({ field, fieldState }) => (
+                  <Field className="gap-1.5" data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="client-email">Client Email</FieldLabel>
                     <Input
                       {...field}
-                      id="project-name"
-                      placeholder="My awesome project"
+                      id="client-email"
+                      type="email"
+                      placeholder="client@example.com"
                       aria-invalid={fieldState.invalid}
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
-              <Controller
-                control={form.control}
-                name="description"
-                render={({ field, fieldState }) => (
-                  <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="project-description">Description</FieldLabel>
-                    <Textarea
-                      {...field}
-                      id="project-description"
-                      placeholder="Brief description of the project"
-                      rows={3}
-                      aria-invalid={fieldState.invalid}
-                    />
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </Field>
-                )}
-              />
-              <Controller
-                control={form.control}
-                name="status"
-                render={({ field, fieldState }) => (
-                  <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-                    <FieldLabel>Status</FieldLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger aria-invalid={fieldState.invalid}>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="draft">Draft</SelectItem>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="paused">Paused</SelectItem>
-                        <SelectItem value="completed">Completed</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </Field>
-                )}
-              />
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Controller
-                  control={form.control}
-                  name="clientName"
-                  render={({ field, fieldState }) => (
-                    <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="client-name">Client Name</FieldLabel>
-                      <Input {...field} id="client-name" placeholder="Client name" aria-invalid={fieldState.invalid} />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-                <Controller
-                  control={form.control}
-                  name="clientEmail"
-                  render={({ field, fieldState }) => (
-                    <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="client-email">Client Email</FieldLabel>
-                      <Input
-                        {...field}
-                        id="client-email"
-                        type="email"
-                        placeholder="client@example.com"
-                        aria-invalid={fieldState.invalid}
+            </div>
+          </FieldGroup>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-sm">Milestones</h3>
+              <Button type="button" variant="outline" size="sm" onClick={addNewMilestone}>
+                Add Milestone
+              </Button>
+            </div>
+
+            {(existingMilestones.length > 0 || newMilestones.length > 0) && (
+              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <SortableContext items={allMilestoneIds} strategy={verticalListSortingStrategy}>
+                  <div className="space-y-2">
+                    {existingMilestones.map((milestone) => (
+                      <SortableExistingMilestoneRow
+                        key={milestone.id}
+                        milestone={milestone}
+                        isEditing={editingMilestoneId === milestone.id}
+                        editTitle={editingMilestone.title}
+                        editDescription={editingMilestone.description}
+                        onEditTitleChange={(v) => setEditingMilestone((prev) => ({ ...prev, title: v }))}
+                        onEditDescriptionChange={(v) => setEditingMilestone((prev) => ({ ...prev, description: v }))}
+                        onStartEdit={() => startEditMilestone(milestone)}
+                        onCancelEdit={cancelEditMilestone}
+                        onSaveEdit={() => saveEditMilestone(milestone.id)}
+                        onDelete={() => deleteExistingMilestone(milestone.id)}
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </div>
-            </FieldGroup>
+                    ))}
+                    {newMilestones.map((milestone) => (
+                      <SortableNewMilestoneRow
+                        key={milestone.tempId}
+                        milestone={milestone}
+                        onUpdate={(field, value) => updateNewMilestone(milestone.tempId, field, value)}
+                        onRemove={() => removeNewMilestone(milestone.tempId)}
+                      />
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
+            )}
 
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h3 className="font-medium text-sm">Milestones</h3>
-                <Button type="button" variant="outline" size="sm" onClick={addNewMilestone}>
-                  Add Milestone
-                </Button>
-              </div>
+            {existingMilestones.length === 0 && newMilestones.length === 0 && (
+              <p className="py-2 text-center text-muted-foreground text-sm">
+                No milestones yet. Add one to get started.
+              </p>
+            )}
+          </div>
 
-              {(existingMilestones.length > 0 || newMilestones.length > 0) && (
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                  <SortableContext items={allMilestoneIds} strategy={verticalListSortingStrategy}>
-                    <div className="space-y-2">
-                      {existingMilestones.map((milestone) => (
-                        <SortableExistingMilestoneRow
-                          key={milestone.id}
-                          milestone={milestone}
-                          isEditing={editingMilestoneId === milestone.id}
-                          editTitle={editingMilestone.title}
-                          editDescription={editingMilestone.description}
-                          onEditTitleChange={(v) => setEditingMilestone((prev) => ({ ...prev, title: v }))}
-                          onEditDescriptionChange={(v) => setEditingMilestone((prev) => ({ ...prev, description: v }))}
-                          onStartEdit={() => startEditMilestone(milestone)}
-                          onCancelEdit={cancelEditMilestone}
-                          onSaveEdit={() => saveEditMilestone(milestone.id)}
-                          onDelete={() => deleteExistingMilestone(milestone.id)}
-                        />
-                      ))}
-                      {newMilestones.map((milestone) => (
-                        <SortableNewMilestoneRow
-                          key={milestone.tempId}
-                          milestone={milestone}
-                          onUpdate={(field, value) => updateNewMilestone(milestone.tempId, field, value)}
-                          onRemove={() => removeNewMilestone(milestone.tempId)}
-                        />
-                      ))}
-                    </div>
-                  </SortableContext>
-                </DndContext>
-              )}
-
-              {existingMilestones.length === 0 && newMilestones.length === 0 && (
-                <p className="py-2 text-center text-muted-foreground text-sm">
-                  No milestones yet. Add one to get started.
-                </p>
-              )}
-            </div>
-
-            <div className="flex justify-end gap-2">
-              <Button type="button" variant="outline" onClick={() => router.back()}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={loading}>
-                {loading ? "Saving..." : "Save Changes"}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="outline" onClick={() => router.back()}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Saving..." : "Save Changes"}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 }

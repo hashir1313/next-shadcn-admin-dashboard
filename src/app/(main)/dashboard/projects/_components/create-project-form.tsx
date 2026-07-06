@@ -21,7 +21,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, GripVertical, Trash2 } from "lucide-react";
+import { GripVertical, Trash2 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -174,118 +174,113 @@ export function CreateProjectForm() {
   }
 
   return (
-    <>
-      <Button variant="ghost" size="icon" onClick={() => router.push("/dashboard/projects")}>
-        <ArrowLeft className="size-4" />
-      </Button>
-      <Card>
-        <CardHeader>
-          <CardTitle>Project Details</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form noValidate onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FieldGroup className="gap-4">
+    <Card>
+      <CardHeader>
+        <CardTitle>Project Details</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form noValidate onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FieldGroup className="gap-4">
+            <Controller
+              control={form.control}
+              name="name"
+              render={({ field, fieldState }) => (
+                <Field className="gap-1.5" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="project-name">Project Name *</FieldLabel>
+                  <Input
+                    {...field}
+                    id="project-name"
+                    placeholder="My awesome project"
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+            <Controller
+              control={form.control}
+              name="description"
+              render={({ field, fieldState }) => (
+                <Field className="gap-1.5" data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="project-description">Description</FieldLabel>
+                  <Textarea
+                    {...field}
+                    id="project-description"
+                    placeholder="Brief description of the project"
+                    rows={3}
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+            <div className="grid gap-4 sm:grid-cols-2">
               <Controller
                 control={form.control}
-                name="name"
+                name="clientName"
                 render={({ field, fieldState }) => (
                   <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="project-name">Project Name *</FieldLabel>
+                    <FieldLabel htmlFor="client-name">Client Name</FieldLabel>
+                    <Input {...field} id="client-name" placeholder="Client name" aria-invalid={fieldState.invalid} />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Controller
+                control={form.control}
+                name="clientEmail"
+                render={({ field, fieldState }) => (
+                  <Field className="gap-1.5" data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="client-email">Client Email</FieldLabel>
                     <Input
                       {...field}
-                      id="project-name"
-                      placeholder="My awesome project"
+                      id="client-email"
+                      type="email"
+                      placeholder="client@example.com"
                       aria-invalid={fieldState.invalid}
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
-              <Controller
-                control={form.control}
-                name="description"
-                render={({ field, fieldState }) => (
-                  <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="project-description">Description</FieldLabel>
-                    <Textarea
-                      {...field}
-                      id="project-description"
-                      placeholder="Brief description of the project"
-                      rows={3}
-                      aria-invalid={fieldState.invalid}
-                    />
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </Field>
-                )}
-              />
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Controller
-                  control={form.control}
-                  name="clientName"
-                  render={({ field, fieldState }) => (
-                    <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="client-name">Client Name</FieldLabel>
-                      <Input {...field} id="client-name" placeholder="Client name" aria-invalid={fieldState.invalid} />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-                <Controller
-                  control={form.control}
-                  name="clientEmail"
-                  render={({ field, fieldState }) => (
-                    <Field className="gap-1.5" data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor="client-email">Client Email</FieldLabel>
-                      <Input
-                        {...field}
-                        id="client-email"
-                        type="email"
-                        placeholder="client@example.com"
-                        aria-invalid={fieldState.invalid}
+            </div>
+          </FieldGroup>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-sm">Milestones</h3>
+              <Button type="button" variant="outline" size="sm" onClick={addMilestone}>
+                Add Milestone
+              </Button>
+            </div>
+            {milestones.length > 0 && (
+              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <SortableContext items={milestones.map((m) => m.tempId)} strategy={verticalListSortingStrategy}>
+                  <div className="space-y-2">
+                    {milestones.map((milestone) => (
+                      <SortableMilestoneRow
+                        key={milestone.tempId}
+                        milestone={milestone}
+                        onUpdate={(field, value) => updateMilestone(milestone.tempId, field, value)}
+                        onRemove={() => removeMilestone(milestone.tempId)}
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
-              </div>
-            </FieldGroup>
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
+            )}
+          </div>
 
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h3 className="font-medium text-sm">Milestones</h3>
-                <Button type="button" variant="outline" size="sm" onClick={addMilestone}>
-                  Add Milestone
-                </Button>
-              </div>
-              {milestones.length > 0 && (
-                <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                  <SortableContext items={milestones.map((m) => m.tempId)} strategy={verticalListSortingStrategy}>
-                    <div className="space-y-2">
-                      {milestones.map((milestone) => (
-                        <SortableMilestoneRow
-                          key={milestone.tempId}
-                          milestone={milestone}
-                          onUpdate={(field, value) => updateMilestone(milestone.tempId, field, value)}
-                          onRemove={() => removeMilestone(milestone.tempId)}
-                        />
-                      ))}
-                    </div>
-                  </SortableContext>
-                </DndContext>
-              )}
-            </div>
-
-            <div className="flex justify-end gap-2">
-              <Button type="button" variant="outline" onClick={() => router.back()}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={loading}>
-                {loading ? "Creating..." : "Create Project"}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="outline" onClick={() => router.back()}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Creating..." : "Create Project"}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
