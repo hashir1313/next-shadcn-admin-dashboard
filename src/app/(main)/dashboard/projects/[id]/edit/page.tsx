@@ -11,13 +11,18 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
 
   if (!project) notFound();
 
+  const milestones = await prisma.milestone.findMany({
+    where: { projectId: id },
+    orderBy: { position: "asc" },
+  });
+
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
         <h2 className="font-medium text-2xl tracking-tight">Edit Project</h2>
-        <p className="text-muted-foreground text-sm">Update project details and status.</p>
+        <p className="text-muted-foreground text-sm">Update project details and milestones.</p>
       </div>
-      <EditProjectForm project={project} />
+      <EditProjectForm project={project} milestones={milestones} />
     </div>
   );
 }

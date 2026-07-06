@@ -22,9 +22,15 @@ const formSchema = z.object({
   clientEmail: z.string().email("Invalid email address").optional().or(z.literal("")),
 });
 
+interface MilestoneEntry {
+  title: string;
+  description: string;
+}
+
 export function CreateProjectForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [milestones, setMilestones] = useState<MilestoneEntry[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,6 +41,18 @@ export function CreateProjectForm() {
       clientEmail: "",
     },
   });
+
+  function addMilestone() {
+    setMilestones((prev) => [...prev, { title: "", description: "" }]);
+  }
+
+  function removeMilestone(index: number) {
+    setMilestones((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function updateMilestone(index: number, field: "title" | "description", value: string) {
+    setMilestones((prev) => prev.map((m, i) => (i === index ? { ...m, [field]: value } : m)));
+  }
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setLoading(true);
@@ -48,6 +66,19 @@ export function CreateProjectForm() {
       if (!response.ok) throw new Error("Failed to create project");
 
       const project = await response.json();
+
+      for (const milestone of milestones) {
+        if (!milestone.title.trim()) continue;
+        await fetch(`/api/projects/${project.id}/milestones`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: milestone.title,
+            description: milestone.description || undefined,
+          }),
+        });
+      }
+
       toast.success("Project created");
       router.push(`/dashboard/projects/${project.id}`);
       router.refresh();
@@ -130,6 +161,48 @@ export function CreateProjectForm() {
               />
             </div>
           </FieldGroup>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-sm">Milestones</h3>
+              <Button type="button" variant="outline" size="sm" onClick={addMilestone}>
+                Add Milestone
+              </Button>
+            </div>
+            {milestones.length > 0 && (
+              <div className="space-y-3">
+                {milestones.map((milestone, index) => (
+                  <div key={index} className="space-y-2 rounded-lg border p-3">
+                    <div className="flex items-start gap-2">
+                      <div className="flex-1 space-y-2">
+                        <Input
+                          placeholder="Milestone title"
+                          value={milestone.title}
+                          onChange={(e) => updateMilestone(index, "title", e.target.value)}
+                        />
+                        <Textarea
+                          placeholder="Optional description"
+                          value={milestone.description}
+                          onChange={(e) => updateMilestone(index, "description", e.target.value)}
+                          rows={2}
+                        />
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="mt-0.5 shrink-0"
+                        onClick={() => removeMilestone(index)}
+                      >
+                        &times;
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" onClick={() => router.back()}>
               Cancel
