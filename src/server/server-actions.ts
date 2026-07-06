@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 
+import { auth } from "@/lib/auth";
 import {
   getPreferencePersistence,
   PREFERENCE_REGISTRY,
@@ -9,6 +10,7 @@ import {
   type PreferenceValueMap,
   parsePreference,
 } from "@/lib/preferences/preferences-config";
+import { prisma } from "@/lib/prisma";
 
 export async function getValueFromCookie(key: string): Promise<string | undefined> {
   const cookieStore = await cookies();
@@ -37,4 +39,19 @@ export async function getPreference<K extends PreferenceKey>(key: K): Promise<Pr
 
   const cookieStore = await cookies();
   return parsePreference(key, cookieStore.get(key)?.value.trim());
+}
+
+export async function completeOnboarding(): Promise<void> {
+  const session = await auth.api.getSession({
+    headers: await import("next/headers").then((m) => m.headers()),
+  });
+
+  if (!session) {
+    return;
+  }
+
+  await prisma.user.update({
+    where: { id: session.user.id },
+    data: { onboardingCompleted: true },
+  });
 }

@@ -13,9 +13,11 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { cn } from "@/lib/utils";
 import { getPreference } from "@/server/server-actions";
 
+import { OnboardingTour } from "./_components/onboarding-tour";
 import { LayoutControls } from "./_components/sidebar/layout-controls";
 import { SearchDialog } from "./_components/sidebar/search-dialog";
 import { ThemeSwitcher } from "./_components/sidebar/theme-switcher";
@@ -29,9 +31,10 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
 
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value !== "false";
-  const [variant, collapsible] = await Promise.all([
+  const [variant, collapsible, userData] = await Promise.all([
     getPreference("sidebar_variant"),
     getPreference("sidebar_collapsible"),
+    prisma.user.findUnique({ where: { id: user.id }, select: { onboardingCompleted: true } }),
   ]);
 
   return (
@@ -44,6 +47,7 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
       }
     >
       <AppSidebar user={user} variant={variant} collapsible={collapsible} />
+      <OnboardingTour showTour={userData?.onboardingCompleted === false} />
       <SidebarInset
         className={cn(
           "[html[data-content-layout=centered]_&>*]:mx-auto",
@@ -67,7 +71,7 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
                 orientation="vertical"
                 className="hidden data-[orientation=vertical]:h-4 data-[orientation=vertical]:self-center md:mx-2 md:block"
               />
-              <span className="hidden md:inline-flex">
+              <span className="hidden md:inline-flex" data-tour="search">
                 <SearchDialog />
               </span>
             </div>

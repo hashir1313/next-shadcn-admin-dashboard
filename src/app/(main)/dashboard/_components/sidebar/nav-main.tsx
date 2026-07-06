@@ -110,6 +110,7 @@ export function NavMain({ items }: NavMainProps) {
                 asChild
                 tooltip="Quick Create"
                 className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground"
+                data-tour="quick-create"
               >
                 <Link prefetch={false} href="/dashboard/projects/new">
                   <PlusCircleIcon />
@@ -169,9 +170,22 @@ function NavItem({ item, isItemActive, isSubItemActive, isSubmenuOpen }: NavItem
 }
 
 function NavLinkItem({ item, isActive, showIconFallback }: NavLinkItemProps) {
+  let tourId: string | undefined;
+  if (item.id === "dashboard") {
+    tourId = "nav-dashboard";
+  } else if (item.id === "settings") {
+    tourId = "nav-settings";
+  }
+
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild aria-disabled={item.disabled} tooltip={item.title} isActive={isActive}>
+      <SidebarMenuButton
+        asChild
+        aria-disabled={item.disabled}
+        tooltip={item.title}
+        isActive={isActive}
+        {...(tourId ? { "data-tour": tourId } : {})}
+      >
         <Link
           prefetch={false}
           href={item.url}
