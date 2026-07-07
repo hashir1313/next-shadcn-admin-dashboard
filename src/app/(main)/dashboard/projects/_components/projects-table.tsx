@@ -52,11 +52,6 @@ export function ProjectsTable({ initialProjects }: { initialProjects: Project[] 
 
   const columns: ColumnDef<Project>[] = [
     {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ row }) => <ProjectStatusToggle projectId={row.original.id} status={row.getValue("status")} />,
-    },
-    {
       accessorKey: "name",
       header: ({ column }) => (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
@@ -85,6 +80,11 @@ export function ProjectsTable({ initialProjects }: { initialProjects: Project[] 
         </Button>
       ),
       cell: ({ row }) => new Date(row.getValue("updatedAt")).toLocaleDateString(),
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => <ProjectStatusToggle projectId={row.original.id} status={row.getValue("status")} />,
     },
     {
       id: "actions",
