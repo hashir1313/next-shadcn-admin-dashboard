@@ -13,7 +13,7 @@ export function SidebarSupportCard() {
         <CardDescription className="line-clamp-3">
           This project is currently in open beta, if you have found a bug open an issue on &nbsp;
           <Link
-            href="https://x.com/arhamkhnz"
+            href="https://github.com/hashir1313/trakki/issues"
             target="_blank"
             rel="noreferrer"
             aria-label="Open an issue on Github"
