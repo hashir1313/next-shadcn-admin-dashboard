@@ -17,6 +17,8 @@ interface PublicPageProps {
   freelancer: {
     name: string;
     email: string;
+    logoUrl: string | null;
+    brandColor: string | null;
   };
   milestones: {
     id: string;
@@ -56,8 +58,12 @@ export function PublicPage({ project, freelancer, milestones, activity, progress
   const completed = milestones.filter((m) => m.status === "completed");
   const remaining = milestones.filter((m) => m.status !== "completed");
 
+  const brandStyle = freelancer.brandColor
+    ? ({ "--brand-color": freelancer.brandColor } as React.CSSProperties)
+    : undefined;
+
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-muted/30" style={brandStyle}>
       <div className="mx-auto max-w-2xl space-y-8 p-4 py-12 md:p-8">
         {/* Header */}
         <div className="space-y-2">
@@ -73,12 +79,21 @@ export function PublicPage({ project, freelancer, milestones, activity, progress
 
         {/* Freelancer Info */}
         <Card>
-          <CardContent className="flex items-center justify-between pt-6">
-            <div>
-              <p className="font-medium text-sm">{freelancer.name}</p>
-              <p className="text-muted-foreground text-xs">{freelancer.email}</p>
+          <CardContent className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              {freelancer.logoUrl ? (
+                // biome-ignore lint/performance/noImgElement: user-uploaded logo
+                <img
+                  src={freelancer.logoUrl}
+                  alt={`${freelancer.name} logo`}
+                  className="size-10 rounded-lg object-contain"
+                />
+              ) : null}
+              <div className="flex flex-row justify-between">
+                <p className="font-medium text-sm">{freelancer.name}</p>
+                <p className="text-muted-foreground text-xs">{freelancer.email}</p>
+              </div>
             </div>
-            <ContactButton email={freelancer.email} projectName={project.name} />
           </CardContent>
         </Card>
 
@@ -95,11 +110,18 @@ export function PublicPage({ project, freelancer, milestones, activity, progress
               </span>
             </div>
             <div className="h-3 overflow-hidden rounded-full bg-muted">
-              <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${progress}%` }} />
+              <div
+                className="h-full rounded-full transition-all"
+                style={{
+                  width: `${progress}%`,
+                  backgroundColor: freelancer.brandColor ?? "var(--color-primary)",
+                }}
+              />
             </div>
             <div className="flex gap-4 text-xs">
               <span className="flex items-center gap-1">
-                <CheckCircle2 className="size-3 text-primary" /> {stats.completed} completed
+                <CheckCircle2 className="size-3" style={{ color: freelancer.brandColor ?? "var(--color-primary)" }} />{" "}
+                {stats.completed} completed
               </span>
               <span className="flex items-center gap-1">
                 <Clock className="size-3 text-muted-foreground" /> {stats.inProgress} in progress
@@ -124,9 +146,16 @@ export function PublicPage({ project, freelancer, milestones, activity, progress
                   return (
                     <div
                       key={m.id}
-                      className="flex items-start gap-3 rounded-lg border border-primary/20 bg-primary/5 p-3"
+                      className="flex items-start gap-3 rounded-lg border p-3"
+                      style={{
+                        borderColor: freelancer.brandColor ? `${freelancer.brandColor}33` : undefined,
+                        backgroundColor: freelancer.brandColor ? `${freelancer.brandColor}0d` : undefined,
+                      }}
                     >
-                      <Icon className="mt-0.5 size-4 shrink-0 text-primary" />
+                      <Icon
+                        className="mt-0.5 size-4 shrink-0"
+                        style={{ color: freelancer.brandColor ?? "var(--color-primary)" }}
+                      />
                       <div>
                         <p className="font-medium text-sm">{m.title}</p>
                         {m.description && <p className="text-muted-foreground text-xs">{m.description}</p>}
@@ -175,7 +204,10 @@ export function PublicPage({ project, freelancer, milestones, activity, progress
                 {activity.map((log, i) => (
                   <div key={log.id} className="flex gap-3">
                     <div className="flex flex-col items-center">
-                      <div className="size-2 rounded-full bg-primary" />
+                      <div
+                        className="size-2 rounded-full"
+                        style={{ backgroundColor: freelancer.brandColor ?? "var(--color-primary)" }}
+                      />
                       {i < activity.length - 1 && <div className="w-px flex-1 bg-border" />}
                     </div>
                     <div className="pb-4">

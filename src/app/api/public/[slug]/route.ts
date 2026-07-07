@@ -13,7 +13,7 @@ export async function GET(_request: Request, { params }: RouteParams) {
       include: {
         milestones: { orderBy: { position: "asc" } },
         activityLog: { orderBy: { createdAt: "desc" }, take: 20 },
-        user: { select: { name: true, email: true } },
+        user: { select: { name: true, email: true, logoUrl: true, brandColor: true } },
       },
     });
 
@@ -37,6 +37,8 @@ export async function GET(_request: Request, { params }: RouteParams) {
       freelancer: {
         name: project.user.name,
         email: project.user.email,
+        logoUrl: project.user.logoUrl,
+        brandColor: project.user.brandColor,
       },
       milestones: project.milestones.map(
         (m: { id: string; title: string; description: string | null; status: string; position: number }) => ({

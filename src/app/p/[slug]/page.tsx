@@ -12,7 +12,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     include: {
       milestones: { orderBy: { position: "asc" } },
       activityLog: { orderBy: { createdAt: "desc" }, take: 20 },
-      user: { select: { name: true, email: true } },
+      user: { select: { name: true, email: true, logoUrl: true, brandColor: true } },
     },
   });
 
@@ -35,6 +35,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       freelancer={{
         name: project.user.name,
         email: project.user.email,
+        logoUrl: project.user.logoUrl,
+        brandColor: project.user.brandColor,
       }}
       milestones={project.milestones.map((m) => ({
         id: m.id,

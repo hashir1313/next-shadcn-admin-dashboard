@@ -15,7 +15,7 @@ export async function GET() {
 
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { name: true, email: true },
+      select: { name: true, email: true, logoUrl: true, brandColor: true },
     });
 
     return NextResponse.json(user);
@@ -37,13 +37,16 @@ export async function PUT(request: Request) {
 
     const body = await request.json();
 
+    const data: Record<string, string> = {};
+    if (body.name !== undefined) data.name = body.name;
+    if (body.email !== undefined) data.email = body.email;
+    if (body.logoUrl !== undefined) data.logoUrl = body.logoUrl;
+    if (body.brandColor !== undefined) data.brandColor = body.brandColor;
+
     const user = await prisma.user.update({
       where: { id: session.user.id },
-      data: {
-        name: body.name,
-        email: body.email,
-      },
-      select: { name: true, email: true },
+      data,
+      select: { name: true, email: true, logoUrl: true, brandColor: true },
     });
 
     return NextResponse.json(user);
