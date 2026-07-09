@@ -1,12 +1,12 @@
-# Trakki
+# Traqqy
 
 **Progress tracking for freelancers** - Share real-time project progress with clients through public milestone pages.
 
-<img src="https://github.com/hashir1313/trakki/blob/main/media/dashboard.png?version=5" alt="Trakki Dashboard">
+<img src="https://github.com/hashir1313/traqqy/blob/main/media/dashboard.png?version=5" alt="Traqqy Dashboard">
 
-Trakki helps freelancers keep clients updated on project progress without sending repetitive messages. Create projects, break them into milestones, and share a unique public page with your clients that shows real-time progress.
+Traqqy helps freelancers keep clients updated on project progress without sending repetitive messages. Create projects, break them into milestones, and share a unique public page with your clients that shows real-time progress.
 
-> **Live demo:** [trakki-eta.vercel.app](https://trakki-eta.vercel.app)
+> **Live demo:** [traqqy-eta.vercel.app](https://traqqy-eta.vercel.app)
 
 ## Features
 
@@ -45,8 +45,8 @@ Trakki helps freelancers keep clients updated on project progress without sendin
 ### Clone & Install
 
 ```bash
-git clone https://github.com/hashir1313/trakki.git
-cd trakki
+git clone https://github.com/hashir1313/traqqy.git
+cd traqqy
 bun install
 ```
 

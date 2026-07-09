@@ -1,7 +1,7 @@
-# Product Brief — Trakki
+# Product Brief — Traqqy
 
 ## What is it?
-**Trakki** is a modern SaaS platform that helps freelancers keep clients updated on project progress without sending repetitive messages. Freelancers create projects, break them into milestones, and mark milestones as completed as they work. Each project includes a unique public client page that displays completed and remaining milestones, an overall progress bar, percentage complete, and the latest project status. This gives clients real-time visibility into progress while reducing communication overhead and building trust.
+**Traqqy** is a modern SaaS platform that helps freelancers keep clients updated on project progress without sending repetitive messages. Freelancers create projects, break them into milestones, and mark milestones as completed as they work. Each project includes a unique public client page that displays completed and remaining milestones, an overall progress bar, percentage complete, and the latest project status. This gives clients real-time visibility into progress while reducing communication overhead and building trust.
 
 ## Who is it for?
 

@@ -81,7 +81,7 @@ export default async function Layout({ children }: Readonly<{ children: ReactNod
               <Button asChild size="icon">
                 <Link
                   prefetch={false}
-                  href="https://github.com/hashir1313/trakki"
+                  href="https://github.com/hashir1313/traqqy"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Open GitHub repository"

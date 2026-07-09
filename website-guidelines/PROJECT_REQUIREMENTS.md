@@ -1,8 +1,8 @@
-# Project Requirements — Trakki
+# Project Requirements — Traqqy
 
 ## Overview
 
-Trakki is a SaaS platform enabling freelancers to share real-time project progress with clients through public milestone pages, reducing communication overhead and building trust.
+Traqqy is a SaaS platform enabling freelancers to share real-time project progress with clients through public milestone pages, reducing communication overhead and building trust.
 
 ---
 

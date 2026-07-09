@@ -221,7 +221,7 @@ export function PublicPage({ project, freelancer, milestones, activity, progress
 
         {/* Footer */}
         <div className="text-center text-muted-foreground text-xs">
-          Powered by <strong>Trakki</strong>
+          Powered by <strong>Traqqy</strong>
         </div>
       </div>
     </div>
