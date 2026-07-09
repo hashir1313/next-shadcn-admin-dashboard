@@ -37,7 +37,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <meta name="apple-mobile-web-app-title" content="Trakki" />
+        <meta name="apple-mobile-web-app-title" content="Traqqy" />
         <link rel="manifest" href="/site.webmanifest" />
         {/* Applies theme and layout preferences on load to avoid flicker and unnecessary server rerenders. */}
         <ThemeBootScript />

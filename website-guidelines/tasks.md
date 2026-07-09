@@ -1,4 +1,4 @@
-# Trakki — Tasks
+# Traqqy — Tasks
 
 Always mark with done when a task is done
 

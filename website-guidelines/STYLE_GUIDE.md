@@ -1,8 +1,8 @@
-# Style Guide — Trakki
+# Style Guide — Traqqy
 
 ## Overview
 
-This guide documents the design system used in the Trakki admin dashboard. The project uses shadcn/ui with the `radix-nova` style, Tailwind CSS v4, and OKLCH color tokens.
+This guide documents the design system used in the Traqqy admin dashboard. The project uses shadcn/ui with the `radix-nova` style, Tailwind CSS v4, and OKLCH color tokens.
 
 ---
 
